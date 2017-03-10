@@ -7,6 +7,8 @@ public enum TokenType {
     INTEGER(),
     PLUS("+"),
     MINUS("-"),
+    MUL("*"),
+    DIV("/"),
     EOF();
 
     private String value = null;

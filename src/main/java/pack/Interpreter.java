@@ -24,8 +24,8 @@ public class Interpreter {
         }
     }
 
-    private void skipWhiteSpace(){
-        while (currentChar != null && currentChar.equals(" ")){
+    private void skipWhiteSpace() {
+        while (currentChar != null && currentChar.equals(" ")) {
             this.advance();
         }
     }
@@ -33,7 +33,7 @@ public class Interpreter {
     private Token getNextToken() {
         while (currentChar != null) {
 
-            if (currentChar.equals(" ")){
+            if (currentChar.equals(" ")) {
                 this.skipWhiteSpace();
                 continue;
             }
@@ -45,6 +45,16 @@ public class Interpreter {
             if (TokenType.PLUS.getValue().equals(currentChar)) {
                 advance();
                 return new Token(TokenType.PLUS, currentChar);
+            }
+
+            if (TokenType.DIV.getValue().equals(currentChar)) {
+                advance();
+                return new Token(TokenType.DIV, currentChar);
+            }
+
+            if (TokenType.MUL.getValue().equals(currentChar)) {
+                advance();
+                return new Token(TokenType.MUL, currentChar);
             }
 
             if (TokenType.MINUS.getValue().equals(currentChar)) {
@@ -60,7 +70,7 @@ public class Interpreter {
 
     private String integer() {
         String result = "";
-        while (this.currentChar != null && StringUtils.isNumeric(currentChar)){
+        while (this.currentChar != null && StringUtils.isNumeric(currentChar)) {
             result = result + currentChar;
             this.advance();
         }
@@ -76,25 +86,38 @@ public class Interpreter {
     }
 
     public Integer expr() {
-        this.currentToken = this.getNextToken();
+        currentToken = getNextToken();
 
-        Token left = currentToken;
-        this.eat(TokenType.INTEGER);
+        Integer result = term();
 
-        Token op = currentToken;
-        this.eat(op.getTokenType());
+        while (isAnOperator()) {
 
-        Token right = currentToken;
-        this.eat(TokenType.INTEGER);
+            Token token = currentToken;
 
-        if (op.getTokenType() == TokenType.PLUS)
-            return Integer.parseInt(left.getValue())
-                    + Integer.parseInt(right.getValue());
+            if (token.getTokenType() == TokenType.MINUS) {
+                token = currentToken;
+                eat(token.getTokenType());
+                result = result - term();
+            }
 
+            if (token.getTokenType() == TokenType.PLUS) {
+                token = currentToken;
+                eat(token.getTokenType());
+                result = result + term();
+            }
+        }
+        return result;
+    }
 
-        return Integer.parseInt(left.getValue())
-                - Integer.parseInt(right.getValue());
+    private boolean isAnOperator() {
+        return currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS;
+    }
 
+    private Integer term() {
+        Token token = currentToken;
+        int result = Integer.parseInt(token.getValue());
+        eat(TokenType.INTEGER);
+        return result;
     }
 
 }

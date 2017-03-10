@@ -5,7 +5,7 @@ package pack;
  */
 public class Main {
     public static void main(String[] args) {
-        Interpreter interpreter = new Interpreter("12 + 7");
+        Interpreter interpreter = new Interpreter("7 - 3 + 2 - 1");
         System.out.println(interpreter.expr());
     }
 }
