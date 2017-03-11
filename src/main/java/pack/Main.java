@@ -1,11 +1,9 @@
 package pack;
 
-/**
- * Created by christian on 3/8/17.
- */
 public class Main {
     public static void main(String[] args) {
-        Interpreter interpreter = new Interpreter("7 - 3 + 2 - 1");
+        Lexer lexer = new Lexer("6 * 3 + 2");
+        Interpreter interpreter = new Interpreter(lexer);
         System.out.println(interpreter.expr());
     }
 }

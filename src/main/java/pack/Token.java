@@ -1,8 +1,5 @@
 package pack;
 
-/**
- * Created by christian on 3/8/17.
- */
 public class Token {
 
     private final TokenType tokenType;
