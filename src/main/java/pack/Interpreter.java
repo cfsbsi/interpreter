@@ -1,6 +1,5 @@
 package pack;
 
-import org.apache.commons.lang.StringUtils;
 
 public class Interpreter {
     private final Lexer lexer;
@@ -23,7 +22,7 @@ public class Interpreter {
 
         Integer result = term();
 
-        while (isAnOperator()) {
+        while (currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS) {
 
             Token token = currentToken;
 
@@ -39,31 +38,30 @@ public class Interpreter {
                 result = result + term();
             }
 
-            if (token.getTokenType() == TokenType.MUL) {
-                token = currentToken;
-                eat(token.getTokenType());
-                result = result * term();
-            }
-
-            if (token.getTokenType() == TokenType.DIV) {
-                token = currentToken;
-                eat(token.getTokenType());
-                result = result / term();
-            }
         }
         return result;
     }
 
-    private boolean isAnOperator() {
-        return currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS ||
-                currentToken.getTokenType() == TokenType.MUL || currentToken.getTokenType() == TokenType.DIV;
-    }
-
-    private Integer term() {
+    private Integer factor() {
         Token token = currentToken;
         int result = Integer.parseInt(token.getValue());
         eat(TokenType.INTEGER);
         return result;
     }
 
+    private Integer term() {
+        int result = factor();
+
+        while (currentToken.getTokenType() == TokenType.MUL || currentToken.getTokenType() == TokenType.DIV) {
+            Token token = currentToken;
+            if (token.getTokenType() == TokenType.DIV) {
+                result = result / Integer.parseInt(token.getValue());
+                eat(token.getTokenType());
+            } else if (token.getTokenType() == TokenType.MUL) {
+                result = result * Integer.parseInt(token.getValue());
+                eat(token.getTokenType());
+            }
+        }
+        return result;
+    }
 }

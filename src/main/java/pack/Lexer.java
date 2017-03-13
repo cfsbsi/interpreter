@@ -74,4 +74,5 @@ public class Lexer {
 
         return new Token(TokenType.EOF, null);
     }
+
 }
