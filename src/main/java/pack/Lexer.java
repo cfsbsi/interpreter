@@ -55,13 +55,15 @@ public class Lexer {
             }
 
             if (TokenType.DIV.getValue().equals(currentChar)) {
+                Token token = new Token(TokenType.DIV, currentChar);
                 advance();
-                return new Token(TokenType.DIV, currentChar);
+                return token;
             }
 
             if (TokenType.MUL.getValue().equals(currentChar)) {
+                Token token = new Token(TokenType.MUL, currentChar);;
                 advance();
-                return new Token(TokenType.MUL, currentChar);
+                return token;
             }
 
             if (TokenType.MINUS.getValue().equals(currentChar)) {

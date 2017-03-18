@@ -55,11 +55,11 @@ public class Interpreter {
         while (currentToken.getTokenType() == TokenType.MUL || currentToken.getTokenType() == TokenType.DIV) {
             Token token = currentToken;
             if (token.getTokenType() == TokenType.DIV) {
-                result = result / Integer.parseInt(token.getValue());
                 eat(token.getTokenType());
+                result = result / factor();
             } else if (token.getTokenType() == TokenType.MUL) {
-                result = result * Integer.parseInt(token.getValue());
                 eat(token.getTokenType());
+                result = result * factor();
             }
         }
         return result;
