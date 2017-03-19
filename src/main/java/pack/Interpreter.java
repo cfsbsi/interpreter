@@ -1,67 +1,44 @@
 package pack;
 
-
+/**
+ * Created by christian on 3/18/17.
+ */
 public class Interpreter {
-    private final Lexer lexer;
-    private Token currentToken;
+    private final Parser parser;
 
-    public Interpreter(Lexer lexer) {
-        this.lexer = lexer;
-        currentToken = lexer.getNextToken();
+    public Interpreter(Parser parser) {
+        this.parser = parser;
     }
 
-    private void eat(TokenType tokenType) {
-        if (currentToken.getTokenType() == tokenType) {
-            currentToken = lexer.getNextToken();
-        } else {
-            throw new RuntimeException();
+    public Integer interpret(){
+        return visit(parser.parse());
+    }
+
+    public Integer visitBinOp(BinOp node) {
+        if (node.getToken().getTokenType() == TokenType.PLUS) {
+            return this.visit(node.getLeft()) + this.visit(node.getRight());
+        } else if (node.getToken().getTokenType() == TokenType.MINUS) {
+            return this.visit(node.getLeft()) - this.visit(node.getRight());
+        } else if(node.getToken().getTokenType() == TokenType.MUL){
+            return this.visit(node.getLeft()) * this.visit(node.getRight());
+        } else if(node.getToken().getTokenType() == TokenType.DIV){
+            return this.visit(node.getLeft()) / this.visit(node.getRight());
+        }
+
+        throw new RuntimeException("Invalid Node");
+
+    }
+
+    public Integer visit(Ast node){
+        if(node instanceof BinOp){
+            return this.visitBinOp((BinOp) node);
+        }else{
+            return this.visitNum(node);
         }
     }
 
-    public Integer expr() {
-
-        Integer result = term();
-
-        while (currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS) {
-
-            Token token = currentToken;
-
-            if (token.getTokenType() == TokenType.MINUS) {
-                token = currentToken;
-                eat(token.getTokenType());
-                result = result - term();
-            }
-
-            if (token.getTokenType() == TokenType.PLUS) {
-                token = currentToken;
-                eat(token.getTokenType());
-                result = result + term();
-            }
-
-        }
-        return result;
-    }
-
-    private Integer factor() {
-        Token token = currentToken;
-        int result = Integer.parseInt(token.getValue());
-        eat(TokenType.INTEGER);
-        return result;
-    }
-
-    private Integer term() {
-        int result = factor();
-
-        while (currentToken.getTokenType() == TokenType.MUL || currentToken.getTokenType() == TokenType.DIV) {
-            Token token = currentToken;
-            if (token.getTokenType() == TokenType.DIV) {
-                eat(token.getTokenType());
-                result = result / factor();
-            } else if (token.getTokenType() == TokenType.MUL) {
-                eat(token.getTokenType());
-                result = result * factor();
-            }
-        }
-        return result;
+    private Integer visitNum(Ast node) {
+        Num num = (Num) node;
+        return num.getValue();
     }
 }

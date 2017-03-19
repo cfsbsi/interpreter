@@ -71,6 +71,16 @@ public class Lexer {
                 return new Token(TokenType.MINUS, currentChar);
             }
 
+            if (TokenType.LPARENT.getValue().equals(currentChar)) {
+                advance();
+                return new Token(TokenType.LPARENT, currentChar);
+            }
+
+            if (TokenType.RPARENT.getValue().equals(currentChar)) {
+                advance();
+                return new Token(TokenType.RPARENT, currentChar);
+            }
+
             throw new RuntimeException("invalid char");
         }
 
