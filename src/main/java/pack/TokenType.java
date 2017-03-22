@@ -2,10 +2,9 @@ package pack;
 
 public enum TokenType {
     INTEGER(),
-    PLUS("+"),
-    MINUS("-"),
-    MUL("*"),
-    DIV("/"),
+    FALSE_STATEMENT("f"),
+    OR("|"),
+    AND("&"),
     LPARENT("("),
     RPARENT(")"),
     EOF();

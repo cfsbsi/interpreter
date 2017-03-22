@@ -18,40 +18,46 @@ public class Parser {
         }
     }
 
-    public Ast expr() {
-
-        Ast node = term();
-
-        while (currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS) {
-
-            Token token = currentToken;
-
-            eat(token.getTokenType());
-
-            node = new BinOp(node, token, term());
-
-        }
-        return node;
-    }
+//    public Ast expr() {
+//
+//        Ast node = term();
+//
+//        while (currentToken.getTokenType() == TokenType.PLUS || currentToken.getTokenType() == TokenType.MINUS) {
+//
+//            Token token = currentToken;
+//
+//            eat(token.getTokenType());
+//
+//            node = new BinOp(node, token, term());
+//
+//        }
+//        return node;
+//    }
 
     private Ast factor() {
+
         Token token = currentToken;
-        if (token.getTokenType() == TokenType.INTEGER){
+
+        if (token.getTokenType() == TokenType.INTEGER) {
             eat(TokenType.INTEGER);
             return new Num(token, Integer.parseInt(token.getValue()));
-        }else if(token.getTokenType() == TokenType.LPARENT){
+        } else if (token.getTokenType() == TokenType.FALSE_STATEMENT) {
+            eat(TokenType.FALSE_STATEMENT);
+            return new Num(token, null);
+        } else if (token.getTokenType() == TokenType.LPARENT) {
             eat(TokenType.LPARENT);
-            Ast node = expr();
+            Ast node = term();
             eat(TokenType.RPARENT);
             return node;
         }
+
         throw new RuntimeException("Invalid operator");
     }
 
     private Ast term() {
         Ast node = factor();
 
-        while (currentToken.getTokenType() == TokenType.MUL || currentToken.getTokenType() == TokenType.DIV) {
+        while (currentToken.getTokenType() == TokenType.AND || currentToken.getTokenType() == TokenType.OR) {
 
             Token token = currentToken;
             eat(token.getTokenType());
@@ -62,6 +68,6 @@ public class Parser {
     }
 
     public Ast parse() {
-        return this.expr();
+        return this.term();
     }
 }

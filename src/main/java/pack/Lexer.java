@@ -45,30 +45,24 @@ public class Lexer {
                 continue;
             }
 
+            if("f".equals(currentChar)){
+                advance();
+                return new Token(TokenType.FALSE_STATEMENT, null);
+            }
+
             if (StringUtils.isNumeric(currentChar)) {
                 return new Token(TokenType.INTEGER, integer());
             }
 
-            if (TokenType.PLUS.getValue().equals(currentChar)) {
+            if (TokenType.AND.getValue().equals(currentChar)) {
                 advance();
-                return new Token(TokenType.PLUS, currentChar);
+                return new Token(TokenType.AND, currentChar);
             }
 
-            if (TokenType.DIV.getValue().equals(currentChar)) {
-                Token token = new Token(TokenType.DIV, currentChar);
+            if (TokenType.OR.getValue().equals(currentChar)) {
+                Token token = new Token(TokenType.OR, currentChar);
                 advance();
                 return token;
-            }
-
-            if (TokenType.MUL.getValue().equals(currentChar)) {
-                Token token = new Token(TokenType.MUL, currentChar);;
-                advance();
-                return token;
-            }
-
-            if (TokenType.MINUS.getValue().equals(currentChar)) {
-                advance();
-                return new Token(TokenType.MINUS, currentChar);
             }
 
             if (TokenType.LPARENT.getValue().equals(currentChar)) {

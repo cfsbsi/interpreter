@@ -10,29 +10,33 @@ public class Interpreter {
         this.parser = parser;
     }
 
-    public Integer interpret(){
+    public Integer interpret() {
         return visit(parser.parse());
     }
 
     public Integer visitBinOp(BinOp node) {
-        if (node.getToken().getTokenType() == TokenType.PLUS) {
+        Integer left = this.visit(node.getLeft());
+        Integer right = this.visit(node.getRight());
+        if (node.getToken().getTokenType() == TokenType.AND) {
+            if(left == null || right == null){
+                return this.visit(new Num(new Token(null, null), null));
+            }
             return this.visit(node.getLeft()) + this.visit(node.getRight());
-        } else if (node.getToken().getTokenType() == TokenType.MINUS) {
-            return this.visit(node.getLeft()) - this.visit(node.getRight());
-        } else if(node.getToken().getTokenType() == TokenType.MUL){
-            return this.visit(node.getLeft()) * this.visit(node.getRight());
-        } else if(node.getToken().getTokenType() == TokenType.DIV){
-            return this.visit(node.getLeft()) / this.visit(node.getRight());
+        } else if (node.getToken().getTokenType() == TokenType.OR) {
+            if (left == null || right == null){
+                return left == null ? right : left;
+            }
+            return Math.min(this.visit(node.getLeft()), this.visit(node.getRight()));
         }
 
         throw new RuntimeException("Invalid Node");
 
     }
 
-    public Integer visit(Ast node){
-        if(node instanceof BinOp){
+    public Integer visit(Ast node) {
+        if (node instanceof BinOp) {
             return this.visitBinOp((BinOp) node);
-        }else{
+        } else {
             return this.visitNum(node);
         }
     }
