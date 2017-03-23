@@ -1,8 +1,8 @@
 package pack;
 
 public enum TokenType {
-    INTEGER(),
-    FALSE_STATEMENT("f"),
+    NUMBER(),
+    FALSE_STATEMENT("null"),
     OR("|"),
     AND("&"),
     LPARENT("("),

@@ -38,9 +38,9 @@ public class Parser {
 
         Token token = currentToken;
 
-        if (token.getTokenType() == TokenType.INTEGER) {
-            eat(TokenType.INTEGER);
-            return new Num(token, Integer.parseInt(token.getValue()));
+        if (token.getTokenType() == TokenType.NUMBER) {
+            eat(TokenType.NUMBER);
+            return new Num(token, Double.parseDouble(token.getValue()));
         } else if (token.getTokenType() == TokenType.FALSE_STATEMENT) {
             eat(TokenType.FALSE_STATEMENT);
             return new Num(token, null);

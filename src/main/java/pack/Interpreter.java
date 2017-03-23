@@ -10,13 +10,13 @@ public class Interpreter {
         this.parser = parser;
     }
 
-    public Integer interpret() {
+    public Double interpret() {
         return visit(parser.parse());
     }
 
-    public Integer visitBinOp(BinOp node) {
-        Integer left = this.visit(node.getLeft());
-        Integer right = this.visit(node.getRight());
+    public Double visitBinOp(BinOp node) {
+        Double left = this.visit(node.getLeft());
+        Double right = this.visit(node.getRight());
         if (node.getToken().getTokenType() == TokenType.AND) {
             if(left == null || right == null){
                 return this.visit(new Num(new Token(null, null), null));
@@ -33,7 +33,7 @@ public class Interpreter {
 
     }
 
-    public Integer visit(Ast node) {
+    public Double visit(Ast node) {
         if (node instanceof BinOp) {
             return this.visitBinOp((BinOp) node);
         } else {
@@ -41,7 +41,7 @@ public class Interpreter {
         }
     }
 
-    private Integer visitNum(Ast node) {
+    private Double visitNum(Ast node) {
         Num num = (Num) node;
         return num.getValue();
     }

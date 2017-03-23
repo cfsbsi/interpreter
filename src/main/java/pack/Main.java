@@ -2,10 +2,12 @@ package pack;
 
 public class Main {
     public static void main(String[] args) {
-        Lexer lexer = new Lexer("(2 & f) | ( (1 & 2) & 2)");
+        long start = System.currentTimeMillis();
+        Lexer lexer = new Lexer("((2 | 1.5) & 2)");
         Parser parser = new Parser(lexer);
         Interpreter interpreter = new Interpreter(parser);
-        Integer result = interpreter.interpret();
+        Double result = interpreter.interpret();
+        System.out.println(System.currentTimeMillis() - start);
         System.out.println(result);
     }
 }

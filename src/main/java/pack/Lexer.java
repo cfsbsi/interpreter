@@ -28,9 +28,9 @@ public class Lexer {
         }
     }
 
-    private String integer() {
+    private String number() {
         String result = "";
-        while (this.currentChar != null && StringUtils.isNumeric(currentChar)) {
+        while (this.currentChar != null && StringUtils.isNumeric(currentChar) || this.currentChar != null && ".".equals(currentChar)) {
             result = result + currentChar;
             this.advance();
         }
@@ -45,13 +45,15 @@ public class Lexer {
                 continue;
             }
 
-            if("f".equals(currentChar)){
-                advance();
+            if("n".equals(currentChar)){
+                while(currentChar != null && StringUtils.isAlpha(currentChar)){
+                    advance();
+                }
                 return new Token(TokenType.FALSE_STATEMENT, null);
             }
 
-            if (StringUtils.isNumeric(currentChar)) {
-                return new Token(TokenType.INTEGER, integer());
+            if (StringUtils.isNumeric(currentChar) || ".".equals(currentChar)) {
+                return new Token(TokenType.NUMBER, number());
             }
 
             if (TokenType.AND.getValue().equals(currentChar)) {

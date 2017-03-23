@@ -5,9 +5,9 @@ package pack;
  */
 public class Num extends Ast {
     private Token token;
-    private Integer value;
+    private Double value;
 
-    public Num(Token token, Integer value) {
+    public Num(Token token, Double value) {
         this.token = token;
         this.value = value;
     }
@@ -16,7 +16,7 @@ public class Num extends Ast {
         return token;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 }
